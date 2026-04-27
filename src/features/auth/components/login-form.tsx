@@ -91,16 +91,6 @@ export function LoginForm() {
 						)}
 					</Button>
 				</form>
-
-				<div className="mt-6 text-center text-sm text-muted-foreground">
-					<p>Demo credentials:</p>
-					<p className="mt-1 font-mono text-xs">
-						admin@filkom.ub.ac.id / admin123
-					</p>
-					<p className="mt-1 font-mono text-xs">
-						budi.santoso@student.ub.ac.id / student123
-					</p>
-				</div>
 			</CardContent>
 		</Card>
 	);
