@@ -77,3 +77,4 @@ The application will be accessible at `http://localhost:3000`.
 - `bun run db:generate`: Generates the Prisma client.
 - `bun run db:push`: Pushes the Prisma schema to the database.
 - `bun run db:seed`: Seeds the database with initial data.
+test
