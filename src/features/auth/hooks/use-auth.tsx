@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { logoutFn, validateUserFn } from '@/features/auth/api/auth.server';
+import { logoutFn, validateUserFn } from '@/features/auth/api/auth.api';
 
 interface User {
 	id: string;

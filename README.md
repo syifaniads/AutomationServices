@@ -1,79 +1,41 @@
-# Go Reserve
+# 🏢 Go Reserve - Sistem Booking Ruangan FILKOM
 
-A comprehensive room reservation system built with TanStack Start, Prisma, and PostgreSQL.
+Tim
+- Syifani Adillah Salsabila (235150207111052)
+- Latifa Anggia Fitriana (235150201111062)
+- Jonathan Salim (235150207111065)
 
-## Features
+Sistem Booking Ruangan FILKOM adalah aplikasi berbasis web yang dirancang untuk memfasilitasi sivitas akademika Universitas Brawijaya dalam melakukan pemesanan ruangan secara terintegrasi. Proyek ini diimplementasikan dengan *pipeline* CI/CD otomatis.
 
-- **Authentication**: Secure login system for users and administrators.
-- **Dashboard**: specialized dashboards for Admin and Student views.
-- **Room Management**: Tools for admins to create, update, and manage room listings.
-- **Reservations**: Booking interface for students and reservation management for admins.
-- **User Management**: Administrative control over user accounts.
-- **Landing Pages**: Public-facing pages including Home, About, Services, and Contact.
+## ✨ Fitur Utama
+- **Autentikasi Aman:** Login eksklusif menggunakan akun Universitas Brawijaya (OAuth).
+- **Manajemen Ruangan:** Pengecekan ketersediaan dan pemesanan ruangan secara *real-time*.
+- **Validasi Cerdas:** Pencegahan bentrok jadwal (Double Booking).
+- **Dashboard Role-Based:** Antarmuka khusus untuk Admin dan Mahasiswa/Student.
 
-## Tech Stack
+## 🏗️ Arsitektur CI/CD
+Proyek ini menggunakan arsitektur *deployment* otomatis:
+`GitHub (Source Code) -> Webhook Trigger -> Jenkins (Build & Test) -> Docker Hub (Image Registry) -> AWS EC2 (Production Server)`
 
-- **Framework**: TanStack Start
-- **Language**: TypeScript
-- **Database**: PostgreSQL with Prisma ORM
-- **Styling**: Tailwind CSS v4, Shadcn UI, and Framer Motion
-- **State Management**: TanStack Query
-- **Testing**: Vitest and React Testing Library
-- **Tooling**: Biome (Linting/Formatting), Husky (Git hooks)
+## 🚀 Panduan Setup Lokal (Local Development)
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js
-- Bun (for running database scripts)
-- PostgreSQL database
-
-### Installation
-
-1. Clone the repository:
+1. **Clone repository:**
    ```bash
-   git clone https://github.com/Xfhreall/go-reserve.git
-   cd go-reserve
-   ```
+   git clone [https://github.com/syifaniads/AutomationServices.git](https://github.com/syifaniads/AutomationServices.git)
+   cd AutomationServices
 
-2. Install dependencies:
+2. **Install dependencies:**
    ```bash
    bun install
-   ```
 
-3. Environment Setup:
-   Copy the example environment file and configure your database connection.
-   ```bash
-   cp .env.example .env
-   ```
+3. **Setup Environment:**
+   Gandakan file .env.example menjadi .env dan isi variabel koneksi database PostgreSQL.
 
-4. Database Setup:
-   Push the schema to your database and seed it with initial data.
+4. **Setup Database:**
    ```bash
    bun run db:push
    bun run db:seed
-   ```
 
-### Running the Application
-
-Start the development server:
-
-```bash
-bun dev
-```
-
-The application will be accessible at `http://localhost:3000`.
-
-## Available Scripts
-
-- `bun dev`: Starts the development server.
-- `bun run build`: Builds the application for production.
-- `bun run preview`: Previews the production build.
-- `bun run test`: Runs the test suite with Vitest.
-- `bun run lint`: Lints the codebase using Biome.
-- `bun run format`: Formats the code using Biome.
-- `bun run check`: Checks code formatting and linting.
-- `bun run db:generate`: Generates the Prisma client.
-- `bun run db:push`: Pushes the Prisma schema to the database.
-- `bun run db:seed`: Seeds the database with initial data.
+5. **Jalankan Aplikasi:**
+   ```bash
+   bun dev

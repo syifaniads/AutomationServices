@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useAuth } from '@/features/auth/hooks/use-auth';
-import { loginFn } from '@/features/auth/api/auth.server';
+import { loginFn } from '@/features/auth/api/auth.api';
 
 export function useLoginForm() {
 	const navigate = useNavigate();
