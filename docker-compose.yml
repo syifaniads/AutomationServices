@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web-app:
+    image: jona2212/web-projek:latest
+    container_name: web-projek
+    ports:
+      - "80:3000"
+    env_file:
+      - .env
+    restart: always
