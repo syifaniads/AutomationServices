@@ -1,16 +1,42 @@
-node_modules
-.DS_Store
-dist
-dist-ssr
-*.local
-count.txt
+# Dependencies / build output
+node_modules/
+dist/
+dist-ssr/
+.output/
+.nitro/
+.tanstack/
+.vinxi/
+.wrangler/
+.vercel/
+coverage/
+
+# Environment / secrets
 .env
-.nitro
-.tanstack
-.wrangler
-.output
-.vinxi
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.jks
+*.keystore
+secrets/
+credentials/
+
+# Local / editor artifacts
+.DS_Store
+*.local
+.vscode/*.local.json
+.idea/
+count.txt
 todos.json
 
+# Logs / temporary files
+*.log
+logs/
+tmp/
+.cache/
+
+# Generated artifacts
 /generated/prisma
-.vercel
