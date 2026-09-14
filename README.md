@@ -28,6 +28,18 @@ flowchart LR
 
 The goal was to reduce manual deployment steps and make application delivery more repeatable and consistent.
 
+## Coursework progression
+
+This project sits in a broader FILKOM infrastructure / DevOps learning sequence from May 2026:
+
+| Coursework | Due | Focus | Surviving evidence |
+|---|---:|---|---|
+| Autoscaling K8S | 7 May 2026 | Kubernetes deployment, load balancing, metrics, autoscaling | Separate [`syifaniads/K8S`](https://github.com/syifaniads/K8S) repository with HPA and deployment manifests |
+| LK IaC - Terraform | 14 May 2026 | Infrastructure as Code | Assignment context is known, but the original `.tf` implementation has not yet been recovered |
+| Otomasi proses kerja pengembangan dan operasi | 28 May 2026 | FILKOM CI/CD-on-AWS module, stage-by-stage documentation, screenshots | Closely aligned with retained Jenkins / Docker / AWS artifacts in this repository |
+
+This helps explain why Kubernetes, Terraform, Jenkins, Docker, and AWS appear in the coursework history without pretending they were all implemented inside one codebase. See [COURSEWORK_CONTEXT.md](./COURSEWORK_CONTEXT.md).
+
 ## What is verifiable in this repository
 
 ### Application
@@ -99,9 +111,11 @@ Some details evolved after the proposal was written.
 | Target server | AWS EC2 | Jenkinsfile contains SSH-based AWS deployment flow |
 | Testing | Build + testing in pipeline | historical Jenkinsfile does **not** contain an explicit Test stage; current `main` exposes `vitest run` |
 | Authentication | Google OAuth UB proposed | retained current source uses application email/password authentication with bcrypt + session logic |
+| Kubernetes autoscaling | separate course exercise | supported in the separate `syifaniads/K8S` repository, not this room-booking codebase |
+| Terraform | separate IaC assignment | assignment exposure is known; matching `.tf` source is not yet verified |
 | Alternate deployment | not part of original proposal | current `main` also contains a later GitHub Actions → Vercel workflow |
 
-This repository does not silently rewrite these differences. They are documented so a reviewer can distinguish the original objective, retained implementation, and later repository evolution.
+This repository does not silently rewrite these differences. They are documented so a reviewer can distinguish the original objective, retained implementation, adjacent coursework, and later repository evolution.
 
 ## Application architecture
 
@@ -137,6 +151,7 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md).
 | Application architecture | [ARCHITECTURE.md](./ARCHITECTURE.md) |
 | Jenkins pipeline | [CI_CD.md](./CI_CD.md) |
 | Docker / AWS deployment | [DEPLOYMENT.md](./DEPLOYMENT.md) |
+| Related K8S / Terraform / CI-CD coursework | [COURSEWORK_CONTEXT.md](./COURSEWORK_CONTEXT.md) |
 | Testing evidence and gaps | [TESTING.md](./TESTING.md) |
 | UI screenshot evidence | [docs/SCREENSHOTS.md](./docs/SCREENSHOTS.md) |
 | Evidence provenance | [SOURCE_EVIDENCE.md](./SOURCE_EVIDENCE.md) |
@@ -188,7 +203,8 @@ The project appears to have also used a FILKOM-managed GitLab environment. That 
 
 1. the retained GitHub branches;
 2. current application source;
-3. the original course proposal.
+3. the original course proposal;
+4. recovered course assignment descriptions, where clearly labeled as context rather than implementation proof.
 
 If the institutional GitLab becomes accessible again, its build logs, pipeline history, deployment evidence, and missing source can be reconciled into [SOURCE_EVIDENCE.md](./SOURCE_EVIDENCE.md) without changing the evidence standard used here.
 
