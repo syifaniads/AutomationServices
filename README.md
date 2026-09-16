@@ -1,6 +1,7 @@
 # FILKOM Room Booking — Jenkins CI/CD Automation
 
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-Jenkins-D24939)](./CI_CD.md)
+[![Current CI](https://img.shields.io/badge/GitHub%20Actions-test%20%2B%20build-2088FF)](./.github/workflows/quality.yml)
 [![Container](https://img.shields.io/badge/container-Docker-2496ED)](./DEPLOYMENT.md)
 [![Cloud](https://img.shields.io/badge/deployment-AWS%20EC2-FF9900)](./DEPLOYMENT.md)
 [![App](https://img.shields.io/badge/app-TanStack%20Start%20%2B%20Prisma-111827)](./ARCHITECTURE.md)
@@ -57,7 +58,9 @@ The retained application is a TypeScript room-reservation system built with:
 - reservation history
 - schedule-conflict prevention
 
-The current reservation service checks overlapping `PENDING` and `APPROVED` bookings before creating a new reservation, so the double-booking rule is implemented in application logic.
+The current reservation service checks overlapping `PENDING` and `APPROVED` bookings before creating a new reservation. The overlap rule has been extracted into a pure helper and now has unit tests covering contained, containing, partial, adjacent, malformed, and invalid-duration cases.
+
+See [TESTING.md](./TESTING.md).
 
 ### Historical Jenkins delivery path
 
@@ -84,6 +87,20 @@ Docker Hub credentials are referenced through Jenkins Credentials, while AWS dep
 
 See [CI_CD.md](./CI_CD.md) and [DEPLOYMENT.md](./DEPLOYMENT.md).
 
+### Current portfolio continuation
+
+The current `main` branch now has a separate GitHub Actions quality workflow that runs:
+
+```text
+frozen dependency install
+        ↓
+reservation unit tests
+        ↓
+application build
+```
+
+The current Vercel production workflow also executes the unit tests before its build/deploy step. This is **current repository hardening**, not a claim that the historical Jenkins pipeline originally contained those tests.
+
 ### Historical testing / UI evidence
 
 The `feature/testing` branch preserves project-specific documentation and screenshots for:
@@ -109,8 +126,8 @@ Some details evolved after the proposal was written.
 | Containerization | Docker | Dockerfile + deploy script exist on `feature/jenkins` |
 | Registry | Docker Hub | Jenkinsfile pushes a Docker image to Docker Hub |
 | Target server | AWS EC2 | Jenkinsfile contains SSH-based AWS deployment flow |
-| Testing | Build + testing in pipeline | historical Jenkinsfile does **not** contain an explicit Test stage; current `main` exposes `vitest run` |
-| Authentication | Google OAuth UB proposed | retained current source uses application email/password authentication with bcrypt + session logic |
+| Testing | Build + testing in pipeline | historical Jenkinsfile has no explicit Test stage; current `main` now has Vitest coverage for booking-overlap semantics and a GitHub Actions test/build gate |
+| Authentication | Google OAuth UB proposed | current source uses email/password verification with bcrypt; route/user state still relies substantially on client-side storage and is not presented as production-grade server-side authorization |
 | Kubernetes autoscaling | separate course exercise | supported in the separate `syifaniads/K8S` repository, not this room-booking codebase |
 | Terraform | separate IaC assignment | assignment exposure is known; matching `.tf` source is not yet verified |
 | Alternate deployment | not part of original proposal | current `main` also contains a later GitHub Actions → Vercel workflow |
@@ -171,19 +188,27 @@ bun run db:seed
 bun dev
 ```
 
-Required local values are represented by `.env.example`; real credentials should never be committed.
+Required local values are represented by `.env.example`; real credentials should never be committed. `DATABASE_URL` points to the PostgreSQL environment, while `IRON_SESSION_PASSWORD` must be a random value of at least 32 characters.
 
 ## Testing
 
-The current main branch defines:
+Run the current automated tests with:
 
 ```bash
 bun run test
 ```
 
-which runs Vitest. Historical project evidence is discussed separately because the earlier `feature/testing` snapshot used a placeholder test command and the recovered Jenkinsfile does not contain a dedicated Test stage.
+The strongest current test evidence is the reservation time-overlap suite in [`tests/reservation-overlap.test.ts`](./tests/reservation-overlap.test.ts). The historical `feature/testing` snapshot used a placeholder test command, so it is documented separately rather than being rewritten as if modern tests existed in the original Jenkins pipeline.
 
 See [TESTING.md](./TESTING.md).
+
+## Security boundary
+
+The public branch no longer contains a hardcoded fallback password for the `iron-session` configuration. The session helper requires `IRON_SESSION_PASSWORD` from the environment.
+
+However, the current route-level authorization implementation still uses client-side user state in parts of the application. This is explicitly treated as a **remaining production-security gap**, not as a completed server-side authorization architecture. A production continuation should enforce authentication and role checks on every sensitive server mutation rather than trusting browser storage.
+
+See [SECURITY.md](./SECURITY.md) and [LIMITATIONS.md](./LIMITATIONS.md).
 
 ## Team and attribution
 
