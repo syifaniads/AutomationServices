@@ -1,5 +1,9 @@
 import { createServerFn } from '@tanstack/react-start';
 import { prisma } from '@/shared/lib/prisma';
+import {
+	overlapWhere,
+	parseReservationWindow,
+} from '@/features/reservations/lib/time-overlap';
 
 export const getReservationsFn = createServerFn({ method: 'GET' }).handler(
 	async () => {
@@ -104,24 +108,13 @@ export const createReservationFn = createServerFn({ method: 'POST' })
 		}) => data,
 	)
 	.handler(async ({ data }) => {
+		const requested = parseReservationWindow(data.startTime, data.endTime);
+
 		const conflicting = await prisma.reservation.findFirst({
 			where: {
 				roomId: data.roomId,
 				status: { in: ['PENDING', 'APPROVED'] },
-				OR: [
-					{
-						startTime: { lte: new Date(data.startTime) },
-						endTime: { gt: new Date(data.startTime) },
-					},
-					{
-						startTime: { lt: new Date(data.endTime) },
-						endTime: { gte: new Date(data.endTime) },
-					},
-					{
-						startTime: { gte: new Date(data.startTime) },
-						endTime: { lte: new Date(data.endTime) },
-					},
-				],
+				...overlapWhere(requested),
 			},
 		});
 
@@ -136,8 +129,8 @@ export const createReservationFn = createServerFn({ method: 'POST' })
 			data: {
 				userId: data.userId,
 				roomId: data.roomId,
-				startTime: new Date(data.startTime),
-				endTime: new Date(data.endTime),
+				startTime: requested.start,
+				endTime: requested.end,
 				purpose: data.purpose,
 				status: 'PENDING',
 			},
