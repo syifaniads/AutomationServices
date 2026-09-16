@@ -14,10 +14,19 @@ export const defaultSession: SessionData = {
 	isLoggedIn: false,
 };
 
+function requireSessionPassword(): string {
+	const password = process.env.IRON_SESSION_PASSWORD;
+	if (!password) {
+		throw new Error('IRON_SESSION_PASSWORD is required');
+	}
+	if (password.length < 32) {
+		throw new Error('IRON_SESSION_PASSWORD must be at least 32 characters');
+	}
+	return password;
+}
+
 export const sessionOptions: SessionOptions = {
-	password:
-		process.env.SESSION_SECRET ||
-		'complex_password_at_least_32_characters_long_for_iron_session',
+	password: requireSessionPassword(),
 	cookieName: 'go-reserve-session',
 	cookieOptions: {
 		secure: process.env.NODE_ENV === 'production',
